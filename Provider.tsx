@@ -1,18 +1,25 @@
-'use client'
-import {LiveblocksProvider,ClientSideSuspense} from "@liveblocks/react/suspense"
-import { ReactNode } from "react"
-import Loader from "./components/Loader"
-const Provider = ({children} :{ children : ReactNode}) => {
+"use client";
+import { LiveblocksProvider, ClientSideSuspense } from "@liveblocks/react/suspense";
+import { ReactNode } from "react";
+import Loader from "./components/Loader";
+import { getClerkUsers } from "./lib/actions/user.actions";
+
+const Provider = ({ children }: { children: ReactNode }) => {
   return (
     <div>
-         <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
-    
-      <ClientSideSuspense fallback={<Loader/>}>
-        {children}
-      </ClientSideSuspense>
-   
-  </LiveblocksProvider></div>
-  )
-}
+      <LiveblocksProvider
+        authEndpoint="/api/liveblocks-auth"
+        resolveUsers={async ({ userIds }) => {
+          const users = await getClerkUsers({ userIds});
+  
+          return users;
+        }}
+      
+      >
+        <ClientSideSuspense fallback={<Loader />}>{children}</ClientSideSuspense>
+      </LiveblocksProvider>
+    </div>
+  );
+};
 
-export default Provider
+export default Provider;

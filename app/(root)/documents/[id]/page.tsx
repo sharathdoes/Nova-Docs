@@ -1,24 +1,30 @@
-import { Editor } from '@/components/editor/Editor'
-import Header from '@/components/Header'
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
-import React from 'react'
+import Collaborativeroom from '@/components/Collaborativeroom';
+import { getDocument } from '@/lib/actions/room.actions';
+import { currentUser } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import React from 'react';
 
-const Document = () => {
+const Document = async ({ params }: { params: { id: string } }) => {
+  // Await params to ensure we can access its properties correctly
+  const { id } = await params; // Awaiting params
+
+  const clerkUser = await currentUser();
+  if (!clerkUser) redirect('/sign-in');
+
+  const room = await getDocument({
+    roomId: id, // Using id from awaited params
+  });
+
   return (
-    <div>
-      <Header>
-        <div className="flex w-fit items-center justify-center gap-2">
-         {/* <p className="document-title"> doc titlw</p> */}
-        </div>
-      </Header>
-      <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-      <Editor/></div>
-  )
+    <main className="flex w-full flex-col items-center">
+      <Collaborativeroom 
+        roomId={id} // Use id directly here as well
+        roomMetadata={room.metadata} 
+        users={[]} 
+        currentUserType={'creator'} 
+      />
+    </main>
+  );
 }
 
-export default Document
+export default Document;
