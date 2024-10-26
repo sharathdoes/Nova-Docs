@@ -23,11 +23,11 @@ Nova Docs is a collaborative document editing application that allows users to c
 - Summarize/rewrite your text with the GEMINI model for concise insights.
 
 
-License
+## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-Acknowledgements
-Next.js
-Liveblocks
-Clerk
-GEMINI
+## Acknowledgements
+- Next.js
+- Liveblocks
+- Clerk
+- GEMINI
