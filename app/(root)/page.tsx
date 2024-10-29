@@ -10,7 +10,6 @@ import Link from 'next/link'
 import AddDocumentBtn from '@/components/addDocument'
 const Home = async () => {
   const clerkUser = await  currentUser();
-  console.log(clerkUser);
   if(!clerkUser) redirect('/sign-in');
 
   const documents=await getDocuments(clerkUser.emailAddresses[0].emailAddress);
